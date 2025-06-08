@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+.<!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
@@ -151,6 +151,7 @@
       <button onclick="mostrarPresenca()">Mostrar Presença</button>
       <h3>Alunos Presentes</h3>
       <ul id="alunosPresentes"></ul>
+      <div class="contador" id="resumoPresenca"></div>
     </div>
   </div>
 
@@ -158,6 +159,7 @@
     const listaAlunos = document.getElementById('listaAlunos');
     const alunosPresentes = document.getElementById('alunosPresentes');
     const contadorAlunos = document.getElementById('contadorAlunos');
+    const resumoPresenca = document.getElementById('resumoPresenca');
     const inputAluno = document.getElementById('nomeAluno');
     const secaoAdicionar = document.getElementById('adicionarAlunos');
     const secaoChamada = document.getElementById('marcarPresenca');
@@ -234,11 +236,15 @@
       alunosPresentes.innerHTML = '';
       const checkboxes = listaAlunos.querySelectorAll('input[type="checkbox"]');
       let presentes = [];
+      let faltas = [];
       checkboxes.forEach((checkbox, index) => {
         if (checkbox.checked) {
           presentes.push(alunos[index]);
+        } else {
+          faltas.push(alunos[index]);
         }
       });
+
       if (presentes.length === 0) {
         alunosPresentes.innerHTML = '<li>Nenhum aluno presente.</li>';
       } else {
@@ -248,6 +254,11 @@
           alunosPresentes.appendChild(li);
         });
       }
+
+      const total = presentes.length + faltas.length;
+      const porcentagem = total > 0 ? ((presentes.length / total) * 100).toFixed(1) : 0;
+
+      resumoPresenca.textContent = `Presentes: ${presentes.length} | Faltas: ${faltas.length} | Presença: ${porcentagem}%`;
     }
 
     inputAluno.addEventListener('keydown', function(event) {
